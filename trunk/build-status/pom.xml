@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.buildstatus</groupId>
+  <artifactId>build-status-notifier</artifactId>
+  <version>1.0</version>
+
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+<!-- 
+		Theses TeamCity dependencies seems not available in any maven repository.
+		So, in order to build that JAR using maven 2, go to Teamcity/webapps/WEB-INF/lib folder and type
+		mvn install:install-file -DgroupId=common-api -DartifactId=com.jetbrains -Dversion=8171 -Dpackaging=jar -Dfile=./common-api.jar
+		mvn install:install-file -DgroupId=server-api -DartifactId=com.jetbrains -Dversion=8171 -Dpackaging=jar -Dfile=./server-api.jar
+-->
+    <dependency>
+      <groupId>server-api</groupId>
+      <artifactId>com.jetbrains</artifactId>
+      <version>8171</version>
+    </dependency>
+    <dependency>
+      <groupId>common-api</groupId>
+      <artifactId>com.jetbrains</artifactId>
+      <version>8171</version>
+    </dependency>
+  </dependencies>
+
+</project>
+
