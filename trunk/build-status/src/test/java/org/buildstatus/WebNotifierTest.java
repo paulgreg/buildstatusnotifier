@@ -58,6 +58,7 @@ public class WebNotifierTest {
 		}
 
 		Assert.assertTrue(isThatStringPresentOnAppEngineTestPage("favicon-pass.png"));
+		Assert.assertFalse(isThatStringPresentOnAppEngineTestPage("favicon-fail.png"));
 	}
 
 	@Test
@@ -70,6 +71,7 @@ public class WebNotifierTest {
 		}
 
 		Assert.assertTrue(isThatStringPresentOnAppEngineTestPage("favicon-fail.png"));
+		Assert.assertFalse(isThatStringPresentOnAppEngineTestPage("favicon-true.png"));
 	}
 
 	/**
