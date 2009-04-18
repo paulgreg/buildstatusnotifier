@@ -17,9 +17,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * TeamCity notifier test class
+ * 
+ * @author Grégory PAUL <paulgreg at gmail.com>
+ */
 public class WebNotifierTest {
 
 	private static final String TEST_APP_NAME = "junit-test";
+
 	private WebNotifier notifier;
 
 	@Before
@@ -50,6 +56,14 @@ public class WebNotifierTest {
 	}
 
 	@Test
+	public void formatProjectName() {
+		Assert.assertEquals("build-status", notifier.formatProjectName("Builds :: build-status"));
+		Assert.assertEquals("apache_commons", notifier.formatProjectName("Builds :: apache commons"));
+		Assert.assertEquals("apache_StringUtils", notifier.formatProjectName("Builds :: apache StringUtils"));
+	}
+
+	
+	@Test
 	public void notifyBuildStatusAppPass() throws MalformedURLException, IOException {
 		try {
 			notifier.notifyBuildStatusApp(WebNotifier.PASS, TEST_APP_NAME);
@@ -62,8 +76,7 @@ public class WebNotifierTest {
 	}
 
 	@Test
-	public void notifyBuildStatusAppFail() throws MalformedURLException,
-			IOException {
+	public void notifyBuildStatusAppFail() throws MalformedURLException, IOException {
 		try {
 			notifier.notifyBuildStatusApp(WebNotifier.FAIL, TEST_APP_NAME);
 		} catch (Exception e) {
@@ -76,15 +89,16 @@ public class WebNotifierTest {
 
 	/**
 	 * Search the corresponding string in the AppEngine "junit-test" web page
-	 * @param searchedString looking for String
+	 * 
+	 * @param searchedString
+	 *            looking for String
 	 * @return true if found, false otherwise
 	 * @throws IOException
 	 * @throws MalformedURLException
 	 */
 	private boolean isThatStringPresentOnAppEngineTestPage(String searchedString) throws IOException,
 			MalformedURLException {
-		InputStream is = new URL(WebNotifier.BASE_URL
-				+ WebNotifier.APP_NAME_PARAM + TEST_APP_NAME).openStream();
+		InputStream is = new URL(WebNotifier.BASE_URL + WebNotifier.APP_NAME_PARAM + TEST_APP_NAME).openStream();
 
 		boolean faviconFound = false;
 
