@@ -16,8 +16,8 @@ public class WebNotifier implements Notificator {
 	private static final String TYPE = "BuildStatusNotifier";
 	private static final String TYPE_NAME = "Build status AppEngine Notifier";
 
-	private static final String BASE_URL = "http://build-status.appspot.com/";
-	private static final String APP_NAME_PARAM = "?app_name=";
+	static final String BASE_URL = "http://build-status.appspot.com/";
+	static final String APP_NAME_PARAM = "?app_name=";
 	static final String PASS = "pass";
 	static final String FAIL = "fail";
 
