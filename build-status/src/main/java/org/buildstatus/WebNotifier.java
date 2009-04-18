@@ -13,74 +13,81 @@ import jetbrains.buildServer.users.SUser;
 
 public class WebNotifier implements Notificator {
 
-   private static final String TYPE = "BuildStatusNotifier";
-   private static final String TYPE_NAME = "Build status AppEngine Notifier";
+	private static final String TYPE = "BuildStatusNotifier";
+	private static final String TYPE_NAME = "Build status AppEngine Notifier";
 
-   private static final String BASE_URL = "http://build-status.appspot.com/";
-   private static final String PASS = "pass";
-   private static final String FAIL = "fail";
-   private static final String APP_NAME_PARAM = "?app_name=";
-   
-   public WebNotifier(NotificatorRegistry notificatorRegistry) throws IOException {
-      notificatorRegistry.register(this);
-   }
+	private static final String BASE_URL = "http://build-status.appspot.com/";
+	private static final String APP_NAME_PARAM = "?app_name=";
+	static final String PASS = "pass";
+	static final String FAIL = "fail";
 
-   @Override
-   public void notifyBuildFailed(SRunningBuild sRunningBuild, Set<SUser> arg1) {
-      notifyBuildStatusApp(FAIL, sRunningBuild.getFullName());
-   }
+	public WebNotifier(NotificatorRegistry notificatorRegistry)
+			throws IOException {
+		notificatorRegistry.register(this);
+	}
 
-   @Override
-   public void notifyBuildSuccessful(SRunningBuild sRunningBuild, Set<SUser> sUsers) {
-      notifyBuildStatusApp(PASS, sRunningBuild.getFullName());
-   }
+	public void notifyBuildFailed(SRunningBuild sRunningBuild, Set<SUser> arg1) {
+		try {
+			notifyBuildStatusApp(FAIL, sRunningBuild.getFullName());
+		} catch (Exception e) {
+			// Do nothing for now...
+		}
+	}
 
-   /**
-    * Notify the build-status AppEngine app of failed or passed build by calling http://build-status.appspot.com/pass?app_name=PROJECT or http://build-status.appspot.com/fail?app_name=PROJECT 
-    * @param action build-status http action : 'pass' or 'fail'
-    * @param appName application name
-    */
-   private void notifyBuildStatusApp(String action, String appName) {
-      try {
-         new URL(BASE_URL + action + APP_NAME_PARAM + appName).openStream();
-      } catch (MalformedURLException e) {
-         e.printStackTrace(); // To replace by a logger
-      } catch (IOException e) {
-         e.printStackTrace(); // To replace by a logger
-      }
-   }
+	public void notifyBuildSuccessful(SRunningBuild sRunningBuild,
+			Set<SUser> sUsers) {
+		try {
+			notifyBuildStatusApp(PASS, sRunningBuild.getFullName());
+		} catch (Exception e) {
+			// Do nothing for now...
+		}
+	}
 
-   @Override
-   public void notifyBuildFailing(SRunningBuild arg0, Set<SUser> arg1) {
-      // Do nothing
-   }
+	public void notifyBuildFailing(SRunningBuild arg0, Set<SUser> arg1) {
+		// Do nothing
+	}
 
-   @Override
-   public void notifyBuildProbablyHanging(SRunningBuild arg0, Set<SUser> arg1) {
-      // Do nothing
-   }
+	public void notifyBuildProbablyHanging(SRunningBuild arg0, Set<SUser> arg1) {
+		// Do nothing
+	}
 
-   @Override
-   public void notifyBuildStarted(SRunningBuild arg0, Set<SUser> arg1) {
-      // Do nothing
-   }
+	public void notifyBuildStarted(SRunningBuild arg0, Set<SUser> arg1) {
+		// Do nothing
+	}
 
-   @Override
-   public void notifyResponsibleChanged(SBuildType arg0, Set<SUser> arg1) {
-      // Do nothing
-   }
+	public void notifyResponsibleChanged(SBuildType arg0, Set<SUser> arg1) {
+		// Do nothing
+	}
 
-   @Override
-   public void notifyLabelingFailed(jetbrains.buildServer.Build build, jetbrains.buildServer.vcs.VcsRoot root, java.lang.Throwable t,
-         java.util.Set<jetbrains.buildServer.users.SUser> users) {
-      // Do nothing
-   }
+	public void notifyLabelingFailed(jetbrains.buildServer.Build build,
+			jetbrains.buildServer.vcs.VcsRoot root, java.lang.Throwable t,
+			java.util.Set<jetbrains.buildServer.users.SUser> users) {
+		// Do nothing
+	}
 
-   public String getNotificatorType() {
-      return TYPE;
-   }
+	/**
+	 * Notify the build-status AppEngine app of failed or passed build by
+	 * calling http://build-status.appspot.com/pass?app_name=PROJECT or
+	 * http://build-status.appspot.com/fail?app_name=PROJECT
+	 * 
+	 * @param action
+	 *            build-status http action : 'pass' or 'fail'
+	 * @param appName
+	 *            application name
+	 * @throws IOException
+	 * @throws MalformedURLException
+	 */
+	void notifyBuildStatusApp(String action, String appName)
+			throws MalformedURLException, IOException {
+		new URL(BASE_URL + action + APP_NAME_PARAM + appName).openStream();
+	}
 
-   public String getDisplayName() {
-      return TYPE_NAME;
-   }
+	public String getNotificatorType() {
+		return TYPE;
+	}
+
+	public String getDisplayName() {
+		return TYPE_NAME;
+	}
+
 }

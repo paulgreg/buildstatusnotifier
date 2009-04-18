@@ -40,6 +40,12 @@
       <artifactId>com.jetbrains</artifactId>
       <version>8171</version>
     </dependency>
+		<dependency>
+  		<groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <version>4.5</version>
+		  <scope>test</scope>
+		</dependency>
   </dependencies>
 
 </project>
