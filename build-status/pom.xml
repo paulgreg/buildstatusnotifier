@@ -23,21 +23,24 @@
 		</plugins>
 	</build>
 
+  <url>http://code.google.com/p/buildstatusnotifier/</url>
+
 	<dependencies>
 <!-- 
 		Theses TeamCity dependencies seems not available in any maven repository.
 		So, in order to build that JAR using maven 2, go to Teamcity/webapps/WEB-INF/lib folder and type
-		mvn install:install-file -DgroupId=common-api -DartifactId=com.jetbrains -Dversion=8171 -Dpackaging=jar -Dfile=./common-api.jar
-		mvn install:install-file -DgroupId=server-api -DartifactId=com.jetbrains -Dversion=8171 -Dpackaging=jar -Dfile=./server-api.jar
+		mvn install:install-file -DgroupId=com.jetbrains -DartifactId=common-api -Dversion=8171 -Dpackaging=jar -Dfile=./common-api.jar
+		mvn install:install-file -DgroupId=com.jetbrains -DartifactId=server-api -Dversion=8171 -Dpackaging=jar -Dfile=./server-api.jar
+		Please note that the version number was found in JARs MANIFEST.MF. Peharps you would like to adapt the version number to your JARs.
 -->
     <dependency>
-      <groupId>server-api</groupId>
-      <artifactId>com.jetbrains</artifactId>
+      <groupId>com.jetbrains</groupId>
+      <artifactId>server-api</artifactId>
       <version>8171</version>
     </dependency>
     <dependency>
-      <groupId>common-api</groupId>
-      <artifactId>com.jetbrains</artifactId>
+      <groupId>com.jetbrains</groupId>
+      <artifactId>common-api</artifactId>
       <version>8171</version>
     </dependency>
 		<dependency>
