@@ -3,6 +3,7 @@ package org.buildstatus;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Set;
 
 import jetbrains.buildServer.notification.Notificator;
@@ -11,6 +12,12 @@ import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SRunningBuild;
 import jetbrains.buildServer.users.SUser;
 
+/**
+ * TeamCity notifier for build-status AppEngine application
+ * 
+ * @see http://build-status.appspot.com
+ * @author Grégory PAUL <paulgreg at gmail.com>
+ */
 public class WebNotifier implements Notificator {
 
 	private static final String TYPE = "BuildStatusNotifier";
@@ -21,25 +28,25 @@ public class WebNotifier implements Notificator {
 	static final String PASS = "pass";
 	static final String FAIL = "fail";
 
-	public WebNotifier(NotificatorRegistry notificatorRegistry)
-			throws IOException {
+	public WebNotifier(NotificatorRegistry notificatorRegistry) throws IOException {
 		notificatorRegistry.register(this);
 	}
 
 	public void notifyBuildFailed(SRunningBuild sRunningBuild, Set<SUser> arg1) {
+		info("Build failed");
 		try {
-			notifyBuildStatusApp(FAIL, sRunningBuild.getFullName());
+			notifyBuildStatusApp(FAIL, formatProjectName(sRunningBuild.getFullName()));
 		} catch (Exception e) {
-			// Do nothing for now...
+			error(e.getMessage() + "-" + e.toString());
 		}
 	}
 
-	public void notifyBuildSuccessful(SRunningBuild sRunningBuild,
-			Set<SUser> sUsers) {
+	public void notifyBuildSuccessful(SRunningBuild sRunningBuild, Set<SUser> sUsers) {
+		info("Build passed");
 		try {
-			notifyBuildStatusApp(PASS, sRunningBuild.getFullName());
+			notifyBuildStatusApp(PASS, formatProjectName(sRunningBuild.getFullName()));
 		} catch (Exception e) {
-			// Do nothing for now...
+			error(e.getMessage() + "-" + e.toString());
 		}
 	}
 
@@ -59,10 +66,17 @@ public class WebNotifier implements Notificator {
 		// Do nothing
 	}
 
-	public void notifyLabelingFailed(jetbrains.buildServer.Build build,
-			jetbrains.buildServer.vcs.VcsRoot root, java.lang.Throwable t,
-			java.util.Set<jetbrains.buildServer.users.SUser> users) {
+	public void notifyLabelingFailed(jetbrains.buildServer.Build build, jetbrains.buildServer.vcs.VcsRoot root,
+			java.lang.Throwable t, java.util.Set<jetbrains.buildServer.users.SUser> users) {
 		// Do nothing
+	}
+
+	public String getNotificatorType() {
+		return TYPE;
+	}
+
+	public String getDisplayName() {
+		return TYPE_NAME;
 	}
 
 	/**
@@ -77,17 +91,41 @@ public class WebNotifier implements Notificator {
 	 * @throws IOException
 	 * @throws MalformedURLException
 	 */
-	void notifyBuildStatusApp(String action, String appName)
-			throws MalformedURLException, IOException {
-		new URL(BASE_URL + action + APP_NAME_PARAM + appName).openStream();
+	void notifyBuildStatusApp(String action, String appName) throws MalformedURLException, IOException {
+		String url = BASE_URL + action + APP_NAME_PARAM + appName;
+		info("Sending request to" + url);
+		new URL(url).openStream();
 	}
 
-	public String getNotificatorType() {
-		return TYPE;
+	/**
+	 * Transform a full name to a simple project name. Note that spaces are
+	 * replaced by underscores.
+	 * 
+	 * @param fullName
+	 *            full TeamCity name : "Builds :: your project name here"
+	 * @return a simple project name
+	 */
+	String formatProjectName(String fullName) {
+		return fullName.replace("Builds :: ", "").replaceAll(" ", "_");
 	}
 
-	public String getDisplayName() {
-		return TYPE_NAME;
+	/**
+	 * Log with an out.println
+	 * 
+	 * @param s
+	 *            String to log
+	 */
+	private void info(String s) {
+		System.out.println(this.getClass().toString() + "#" + new Date().toString() + ": " + s);
 	}
 
+	/**
+	 * Log with an err.println
+	 * 
+	 * @param s
+	 *            String to log
+	 */
+	private void error(String s) {
+		System.err.println(this.getClass().toString() + "#" + new Date().toString() + ": " + s);
+	}
 }
