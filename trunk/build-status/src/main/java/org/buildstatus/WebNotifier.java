@@ -93,7 +93,7 @@ public class WebNotifier implements Notificator {
 	 */
 	void notifyBuildStatusApp(String action, String appName) throws MalformedURLException, IOException {
 		String url = BASE_URL + action + APP_NAME_PARAM + appName;
-		info("Sending request to" + url);
+		info("Sending request to " + url);
 		new URL(url).openStream();
 	}
 
@@ -118,7 +118,7 @@ public class WebNotifier implements Notificator {
 	 *            String to log
 	 */
 	private void info(String s) {
-		System.out.println(this.getClass().toString() + "#" + new Date().toString() + ": " + s);
+		System.out.println(this.getClass().toString() + "# " + new Date().toString() + ": " + s);
 	}
 
 	/**
@@ -128,6 +128,6 @@ public class WebNotifier implements Notificator {
 	 *            String to log
 	 */
 	private void error(String s) {
-		System.err.println(this.getClass().toString() + "#" + new Date().toString() + ": " + s);
+		System.err.println(this.getClass().toString() + "# " + new Date().toString() + ": " + s);
 	}
 }
