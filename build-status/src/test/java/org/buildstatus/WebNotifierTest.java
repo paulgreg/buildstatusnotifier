@@ -60,9 +60,9 @@ public class WebNotifierTest {
 		Assert.assertEquals("build-status", notifier.formatProjectName("Builds :: build-status"));
 		Assert.assertEquals("apache_commons", notifier.formatProjectName("Builds :: apache commons"));
 		Assert.assertEquals("apache_StringUtils", notifier.formatProjectName("Builds :: apache StringUtils"));
+		Assert.assertEquals("test-build-dev", notifier.formatProjectName("My Category :: test-build-dev"));
 	}
 
-	
 	@Test
 	public void notifyBuildStatusAppPass() throws MalformedURLException, IOException {
 		try {

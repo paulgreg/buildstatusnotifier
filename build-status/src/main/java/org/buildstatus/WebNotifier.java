@@ -105,8 +105,10 @@ public class WebNotifier implements Notificator {
 	 *            full TeamCity name : "Builds :: your project name here"
 	 * @return a simple project name
 	 */
-	String formatProjectName(String fullName) {
-		return fullName.replace("Builds :: ", "").replaceAll(" ", "_");
+	String formatProjectName(final String fullName) {
+		String separator = ":: ";
+		int idxToRemove = fullName.lastIndexOf(separator) + separator.length();
+		return fullName.substring(idxToRemove).replaceAll(" ", "_");
 	}
 
 	/**
